@@ -5,7 +5,7 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
 		features="src/test/java/features",
 		glue="stepDefinitions",				//package name
-		dryRun=true,
+		//dryRun=true,
 		monochrome=true,
 		plugin= {
 				"pretty",
