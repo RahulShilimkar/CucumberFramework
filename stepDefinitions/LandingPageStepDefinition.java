@@ -39,6 +39,7 @@ public class LandingPageStepDefinition {
 	public void user_searched_with_short_name_and_extracted_actual_name_of_product(String shortName) throws InterruptedException {
 		testContextSetup.driver.findElement(By.xpath("//input[@type='search']")).sendKeys(shortName);
 		Thread.sleep(3000);
+		//testContextSetup.landingPageText -> Changing because we need to share this as well across multiple files.
 		testContextSetup.landingPageText = testContextSetup.driver.findElement(By.cssSelector("h4.product-name")).getText().split("-")[0].trim();
 		System.out.println("The name derived is "+testContextSetup.landingPageText);	    
 	}
