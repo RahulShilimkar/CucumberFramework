@@ -11,6 +11,7 @@ import org.testng.Assert;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import pageObjects.LandingPage;
 import utils.TestContextSetup;
 
 public class LandingPageStepDefinition {
@@ -37,10 +38,16 @@ public class LandingPageStepDefinition {
 	}
 	@When("user searched with shortName {string} and extracted actual name of product")
 	public void user_searched_with_short_name_and_extracted_actual_name_of_product(String shortName) throws InterruptedException {
-		testContextSetup.driver.findElement(By.xpath("//input[@type='search']")).sendKeys(shortName);
+		LandingPage landingPage = new LandingPage(testContextSetup.driver);
+		//We are passing driver instance from our main class to POM class for landing page to access driver.
+//		testContextSetup.driver.findElement(By.xpath("//input[@type='search']")).sendKeys(shortName);
+		
+		landingPage.searchItem(shortName);
 		Thread.sleep(3000);
 		//testContextSetup.landingPageText -> Changing because we need to share this as well across multiple files.
-		testContextSetup.landingPageText = testContextSetup.driver.findElement(By.cssSelector("h4.product-name")).getText().split("-")[0].trim();
+		//testContextSetup.landingPageText = testContextSetup.driver.findElement(By.cssSelector("h4.product-name")).getText().split("-")[0].trim();
+		
+		testContextSetup.landingPageText = landingPage.getProductName().split("-")[0].trim();
 		System.out.println("The name derived is "+testContextSetup.landingPageText);	    
 	}
 
