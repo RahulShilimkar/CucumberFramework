@@ -11,6 +11,8 @@ import org.testng.Assert;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import pageObjects.LandingPage;
+import pageObjects.OffersPage;
 import utils.TestContextSetup;
 
 public class OfferPageStepDefinition {
@@ -33,18 +35,26 @@ public class OfferPageStepDefinition {
 //		//testContextSetup.driver - this driver variable is already initialized.		
 		clickToTopDeals();
 		switchWindow();
-	   testContextSetup.driver.findElement(By.xpath("//input[@type='search']")).sendKeys(shortName);
+		
+		OffersPage offersPage = new OffersPage(testContextSetup.driver);
+		offersPage.searchItem(shortName);
+	   //testContextSetup.driver.findElement(By.xpath("//input[@type='search']")).sendKeys(shortName);
+		
 	   Thread.sleep(2000);
-	   offerPageText = testContextSetup.driver.findElement(By.cssSelector("tr td:nth-child(1)")).getText();
+	   offerPageText = offersPage.getProductName();
+	   //offerPageText = testContextSetup.driver.findElement(By.cssSelector("tr td:nth-child(1)")).getText();
+	   
 	   System.out.println("Text got is :- "+offerPageText);
-	   System.out.println("Value of landing page is :- "+testContextSetup.landingPageText);
+	   System.out.println("Value of landing page is :- "+ testContextSetup.landingPageText);
 	}
 	
 	//Making classes loosely coupled and following Single responsibility principle.
 	public void clickToTopDeals()
 	{
 		//testContextSetup.driver - this driver variable is already initialized.
-		testContextSetup.driver.findElement(By.linkText("Top Deals")).click();
+		LandingPage landingPage = new LandingPage(testContextSetup.driver);
+		landingPage.topDealsLandingPage();
+		//testContextSetup.driver.findElement(By.linkText("Top Deals")).click();
 	}
 	public void switchWindow()
 	{

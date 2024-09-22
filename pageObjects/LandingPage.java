@@ -11,8 +11,9 @@ public class LandingPage {
 	}
 	
 	//Above driver is now having life in this file as well and is derived from main landingPage class file.
-	By search = By.xpath("//input[@type='search']");
-	By productName = By.cssSelector("h4.product-name");
+	private By search = By.xpath("//input[@type='search']");
+	private By productName = By.cssSelector("h4.product-name");
+	private By topDealsPage = By.linkText("Top Deals");
 	
 	
 	public void searchItem(String shortName)
@@ -23,6 +24,11 @@ public class LandingPage {
 	public String getProductName()
 	{
 		return driver.findElement(productName).getText();
+	}
+	
+	public void topDealsLandingPage()
+	{
+		driver.findElement(topDealsPage).click();
 	}
 
 }
