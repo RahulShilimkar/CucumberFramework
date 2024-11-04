@@ -8,49 +8,61 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
+import allSharedFilesStoredHere.SharedFilesAcrossProject;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pageObjects.LandingPage;
-import utils.TestContextSetup;
+import pageObjects.LandingPageObjects;
+import pageObjects.pageObjectsManager;
 
 public class LandingPageStepDefinition {
-	//Here we are keeping only the cases which are related to LandingPage on website.
-	//We haave to transfer state of driver and landingPageText to OfferPageStepDefinition,which can be done using Dependency Injection.
-	//Dependency Injection being used is Pico container, take it from maveb repo and paste in pom.xml
-		public WebDriver driver;
-		public String offerPageText;
-		public String landingPageText;
-		TestContextSetup testContextSetup;  //Creating a global variable.
-		
-		//Creating below constructor to access methods/variable in TestContextSetup class
-		//Constructor is Runned automatically as soon as we run test,hence we sued it to create and access variables in utils class
-		public LandingPageStepDefinition(TestContextSetup testContextSetup)
-		{
-			this.testContextSetup = testContextSetup;   //testContextSetup - get's a life here.
-		}
+
+	
+	public WebDriver driver;
+	public String offerPageText;
+	public String landingPageText;
+	public SharedFilesAcrossProject sharedFiles;
+	
+	public LandingPageStepDefinition(SharedFilesAcrossProject sharedFiles)
+	{
+		this.sharedFiles = sharedFiles;
+	}
 	
 	@Given("user is on GreenCart Landing Page")
 	public void user_is_on_green_cart_landing_page() {
-	   System.setProperty("webdriver.chrome.driver", "C:\\Selenium Jars and Dependencies\\Browser Drivers\\chromedriver.exe");  
-	   testContextSetup.driver = new ChromeDriver();
-	   testContextSetup.driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
+	   
 	}
 	@When("user searched with shortName {string} and extracted actual name of product")
 	public void user_searched_with_short_name_and_extracted_actual_name_of_product(String shortName) throws InterruptedException {
-		LandingPage landingPage = new LandingPage(testContextSetup.driver);
-		//We are passing driver instance from our main class to POM class for landing page to access driver.
-//		testContextSetup.driver.findElement(By.xpath("//input[@type='search']")).sendKeys(shortName);
 		
-		landingPage.searchItem(shortName);
-		Thread.sleep(3000);
-		//testContextSetup.landingPageText -> Changing because we need to share this as well across multiple files.
-		//testContextSetup.landingPageText = testContextSetup.driver.findElement(By.cssSelector("h4.product-name")).getText().split("-")[0].trim();
-		
-		testContextSetup.landingPageText = landingPage.getProductName().split("-")[0].trim();
-		System.out.println("The name derived is "+testContextSetup.landingPageText);	    
+    	LandingPageObjects landingPage = sharedFiles.pageObject.getLandingPage();
+    	landingPage.searchName(shortName);
+    	Thread.sleep(3000);
+    	sharedFiles.landingPageText = landingPage.getProductName().split("-")[0].trim();
+    	System.out.println("The name derived is "+sharedFiles.landingPageText);	
+				
+//    	pageObjectsManager pageObjectManager = new pageObjectsManager(sharedFiles.driver);
+//    	LandingPageObjects landingPage = pageObjectManager.getLandingPage();
+//    	landingPage.searchName(shortName);
+//    	Thread.sleep(3000);
+//    	sharedFiles.landingPageText = landingPage.getProductName().split("-")[0].trim();
+//    	System.out.println("The name derived is "+sharedFiles.landingPageText);	
+    	
+    	
+//    	pageObjectsManager pageObjectManager = new pageObjectsManager(sharedFiles.driver);
+//		pageObjectManager.getLandingPage().searchName(shortName);
+//		Thread.sleep(3000);
+//		sharedFiles.landingPageText = pageObjectManager.getLandingPage().getProductName().split("-")[0].trim();
+//		System.out.println("The name derived is "+sharedFiles.landingPageText);	 
+//		
+//		
+//		LandingPageObjects landingPage = new LandingPageObjects(sharedFiles.driver);
+//		landingPage.searchName(shortName);
+//		Thread.sleep(3000);
+//		sharedFiles.landingPageText = landingPage.getProductName().split("-")[0].trim();
+//		System.out.println("The name derived is "+sharedFiles.landingPageText);	    
 	}
-
+	
 }
 
 
